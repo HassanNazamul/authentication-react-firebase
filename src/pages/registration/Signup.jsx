@@ -32,7 +32,7 @@ const Signup = () => {
         try {
             const user = await createUserWithEmailAndPassword(auth, form.email, form.password);
             alert("Sign Up Success");
-            navi("/login");//upon success redirect to profile page
+            navi("/login");//upon success redirect to Login page
         } catch (error) {
 
             console.log("Faild to register", error.message);

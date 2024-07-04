@@ -5,29 +5,37 @@ import { Link, useNavigate } from 'react-router-dom'
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from "../../firebase/firebaseConfig"
 
+// Login form empty to structure object
 const loginForm = {
     email: '',
     password: ''
 }
 
+//Functional Component
 const Login = () => {
 
+    //Variable initized to empty form
     const [login, setLogin] = useState(loginForm);
 
+    //to redirect
     const navi = useNavigate();
 
+    // filling the empty object preparation to submit the form
     const handleChange = (e) => {
         setLogin({ ...login, [e.target.name]: e.target.value });
         console.log(login);
     }
 
+    //handling function when registration  happen
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(login);
+
+        //calling firebase login function
         try {
             const user = await signInWithEmailAndPassword(auth, login.email, login.password);
             alert("Login Success");
-            navi("/profile")
+            navi("/profile")//upon sucess redirected to profile page
 
         } catch (error) {
             console.log("Failded to login", error.message);
