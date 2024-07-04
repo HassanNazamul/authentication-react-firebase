@@ -4,6 +4,8 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from "../../firebase/firebaseConfig"
+import { toast } from 'react-toastify';
+
 
 // Login form empty to structure object
 const loginForm = {
@@ -38,10 +40,11 @@ const Login = () => {
             //storing user data as a string in local storage
             const users = localStorage.setItem('user', JSON.stringify(user));
 
-            alert("Login Success");
+            toast.success("Welcome Login Success", { autoClose: 1000 });
             navi("/profile")//upon sucess redirected to profile
 
         } catch (error) {
+            toast.error("Login Failed", { autoClose: 1000 });
             console.log("Failded to login", error.message);
         }
 

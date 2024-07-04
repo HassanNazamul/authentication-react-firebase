@@ -4,6 +4,8 @@ import Login from "./pages/registration/Login";
 import Signup from "./pages/registration/Signup";
 import Profile from "./pages/Profile";
 import { ProtectedRoute } from "./pages/protected/ProtectedRoute";
+import { Slide, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -19,6 +21,11 @@ function App() {
         <Route></Route>
         {/* <Route path="*" element={<Error />} ></Route> */}
       </Routes>
+      <ToastContainer
+        transition={Slide}
+        position="top-right"
+        autoClose={5000}
+      />
     </BrowserRouter>
   );
 }

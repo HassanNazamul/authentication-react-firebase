@@ -4,6 +4,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Link, useNavigate } from 'react-router-dom'
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase/firebaseConfig';
+import { toast } from 'react-toastify';
 
 // sign up form empty to structure object
 const signUpForm = {
@@ -24,6 +25,8 @@ const Signup = () => {
     //to redirect
     const navi = useNavigate();
 
+
+
     //handling function when registration  happen
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -31,11 +34,12 @@ const Signup = () => {
         //calling firebase signup function
         try {
             const user = await createUserWithEmailAndPassword(auth, form.email, form.password);
-            alert("Sign Up Success");
+            toast.success("Congrats! Sigup Success", { autoClose: 1000 });
             navi("/login");//upon success redirect to Login page
-        } catch (error) {
 
+        } catch (error) {
             console.log("Faild to register", error.message);
+            toast.error("Sign-up Failed", { autoClose: 1000 });
         }
         // console.log(form);
 
@@ -48,7 +52,9 @@ const Signup = () => {
     }
 
     return (
+
         <Container component="main" maxWidth="xs">
+            {/* <Button onClick={notify}>Toast</Button> */}
             <CssBaseline />
             <Box
                 sx={{
