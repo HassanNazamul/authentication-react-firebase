@@ -34,8 +34,12 @@ const Login = () => {
         //calling firebase login function
         try {
             const user = await signInWithEmailAndPassword(auth, login.email, login.password);
+
+            //storing user data as a string in local storage
+            const users = localStorage.setItem('user', JSON.stringify(user));
+
             alert("Login Success");
-            navi("/profile")//upon sucess redirected to profile page
+            navi("/profile")//upon sucess redirected to profile
 
         } catch (error) {
             console.log("Failded to login", error.message);
