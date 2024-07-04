@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase/firebaseConfig';
 
+// sign up form empty to structure object
 const signUpForm = {
 
     // fname: '',
@@ -14,19 +15,24 @@ const signUpForm = {
     // repassword: ''
 }
 
+//Functional Component
 const Signup = () => {
 
-
+    //Variable initized to empty form
     const [form, setForm] = useState(signUpForm);
 
+    //to redirect
     const navi = useNavigate();
 
+    //handling function when registration  happen
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        //calling firebase signup function
         try {
             const user = await createUserWithEmailAndPassword(auth, form.email, form.password);
             alert("Sign Up Success");
-            navi("/login");
+            navi("/login");//upon success redirect to profile page
         } catch (error) {
 
             console.log("Faild to register", error.message);
@@ -35,7 +41,7 @@ const Signup = () => {
 
     }
 
-
+    // filling the empty object preparation to submit the form
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
         // console.log(form);
@@ -58,8 +64,10 @@ const Signup = () => {
                 <Typography component="h1" variant="h5">
                     Sign up
                 </Typography>
+
                 <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
 
+                    {/* parent grid for all user input */}
                     <Grid container spacing={2}>
                         {/* <Grid item xs={12} sm={6}>
                             <TextField
@@ -117,7 +125,10 @@ const Signup = () => {
                         </Grid> */}
 
                     </Grid>
+                    {/* parent grid for all user input end*/}
 
+
+                    {/* submit button */}
                     <Button
                         type="submit"
                         fullWidth
@@ -126,6 +137,7 @@ const Signup = () => {
                     >
                         Sign Up
                     </Button>
+                    {/* submit button end */}
 
                     <Grid container justifyContent="flex-end">
                         <Grid item>
@@ -142,7 +154,10 @@ const Signup = () => {
                     </Grid>
 
                 </Box>
+                {/* Child box end */}
+
             </Box>
+            {/* parent box end */}
         </Container>
     )
 
