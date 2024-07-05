@@ -1,7 +1,7 @@
 {
   "name": "login-basic-react-firebase",
   "version": "0.1.0",
-  "homepage": "https://HassanNazamul.github.io/authentication-react-firebase",
+  "homepage": "https://HassanNazamul.github.io/",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.4",
