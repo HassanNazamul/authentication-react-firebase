@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./pages/registration/Login";
 import Signup from "./pages/registration/Signup";
 import Profile from "./pages/Profile";
+import Error from "./pages/Error";
 import { ProtectedRoute } from "./pages/protected/ProtectedRoute";
 import { Slide, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,13 +14,15 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} ></Route>
         <Route path="/signup" element={<Signup />}></Route>
+
         <Route path="/profile" element={
           <ProtectedRoute>
             <Profile />
           </ProtectedRoute>
-        } ></Route>
-        <Route></Route>
-        {/* <Route path="*" element={<Error />} ></Route> */}
+        }
+        ></Route>
+
+        <Route path="*" element={<Error />} />
       </Routes>
       <ToastContainer
         transition={Slide}
