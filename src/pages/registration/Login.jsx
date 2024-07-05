@@ -47,12 +47,17 @@ const Login = () => {
             if (userShot.exists) {
                 const userData = userShot.val();
 
+                const userInfo = userData[user.uid];
+
+                // Extract data from userData
+                const { email, firstName, lastName } = userInfo;
+
                 // Store user data in local storage
                 const userDetails = {
                     uid: user.uid,
                     email: user.email,
-                    firstName: userData.firstName,
-                    lastName: userData.lastName,
+                    firstName: firstName,
+                    lastName: lastName,
                 };
                 //storing user data as a string in local storage
 
@@ -82,11 +87,14 @@ const Login = () => {
             <CssBaseline />
             <Box
                 sx={{
+                    borderRadius: "8px",
+                    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
                     marginTop: 15,
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
                 }}
+                padding={5}
             >
                 <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                     <LockOutlinedIcon />
