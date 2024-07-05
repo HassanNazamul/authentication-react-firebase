@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/authentication-react-firebase">
       <Routes>
         <Route path="/" element={<Login />} ></Route>
         <Route path="/signup" element={<Signup />}></Route>
