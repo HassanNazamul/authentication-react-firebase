@@ -3,7 +3,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from "../../firebase/firebaseConfig"
+import { auth, db } from "../../firebase/firebaseConfig"
+import { ref, get } from 'firebase/database';
 import { toast } from 'react-toastify';
 
 
@@ -31,21 +32,47 @@ const Login = () => {
     //handling function when registration  happen
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(login);
+        // console.log(login);
 
         //calling firebase login function
         try {
-            const user = await signInWithEmailAndPassword(auth, login.email, login.password);
+            const userCredential = await signInWithEmailAndPassword(auth, login.email, login.password);
+            const user = userCredential.user;
 
-            //storing user data as a string in local storage
-            const users = localStorage.setItem('user', JSON.stringify(user));
+            // Retrieve additional user information from Realtime Database
+            const userRef = ref(db, 'users/', user.uid);
 
-            toast.success("Welcome Login Success", { autoClose: 1000 });
-            navi("/profile")//upon sucess redirected to profile
+            const userShot = await get(userRef);
+
+            if (userShot.exists) {
+                const userData = userShot.val();
+
+                // Store user data in local storage
+                const userDetails = {
+                    uid: user.uid,
+                    email: user.email,
+                    firstName: userData.firstName,
+                    lastName: userData.lastName,
+                };
+                //storing user data as a string in local storage
+
+                localStorage.setItem('user', JSON.stringify(userDetails));
+                toast.success("Welcome Login Success", { autoClose: 1000 });
+                navi("/profile")//upon sucess redirected to profile
+            }
+            else {
+                toast.error("User data not found", { autoClose: 1000 });
+            }
 
         } catch (error) {
-            toast.error("Login Failed", { autoClose: 1000 });
-            console.log("Failded to login", error.message);
+            if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found') {
+                toast.error("Invalid email or password", { autoClose: 1000 });
+            } else if (error.message.includes('400')) {
+                toast.error("Bad Request: Check your input data", { autoClose: 1000 });
+            } else {
+                toast.error("Login Failed", { autoClose: 1000 });
+            }
+            console.log("Failed to login", error.message);
         }
 
     }

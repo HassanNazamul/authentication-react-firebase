@@ -3,14 +3,15 @@ import { Grid, Typography, TextField, CssBaseline, Container, Box, Button, Avata
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Link, useNavigate } from 'react-router-dom'
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../firebase/firebaseConfig';
+import { ref, set } from 'firebase/database';
+import { auth, db } from '../../firebase/firebaseConfig';
 import { toast } from 'react-toastify';
 
 // sign up form empty to structure object
 const signUpForm = {
 
-    // fname: '',
-    // lname: '',
+    fname: '',
+    lname: '',
     email: '',
     password: '',
     // repassword: ''
@@ -33,9 +34,21 @@ const Signup = () => {
 
         //calling firebase signup function
         try {
-            const user = await createUserWithEmailAndPassword(auth, form.email, form.password);
+            const userCredential = await createUserWithEmailAndPassword(auth, form.email, form.password);
+
+            const user = userCredential.user;
+
+            const userRef = ref(db, 'users/' + user.uid);
+
+            // Save additional user information to the Realtime Database
+            await set(userRef, {
+                firstName: form.fname,
+                lastName: form.lname,
+                email: form.email
+            });
+
             toast.success("Congrats! Sigup Success", { autoClose: 1000 });
-            navi("/login");//upon success redirect to Login page
+            navi("/");//upon success redirect to Login page
 
         } catch (error) {
             console.log("Faild to register", error.message);
@@ -75,7 +88,7 @@ const Signup = () => {
 
                     {/* parent grid for all user input */}
                     <Grid container spacing={2}>
-                        {/* <Grid item xs={12} sm={6}>
+                        <Grid item xs={12} sm={6}>
                             <TextField
                                 name="fname"
                                 onChange={handleChange}
@@ -96,7 +109,7 @@ const Signup = () => {
                                 label="Last Name"
                                 autoComplete="family-name"
                             />
-                        </Grid> */}
+                        </Grid>
                         <Grid item xs={12}>
                             <TextField
                                 name="email"
@@ -147,14 +160,14 @@ const Signup = () => {
 
                     <Grid container justifyContent="flex-end">
                         <Grid item>
-                            <Link to={"/login"} style={{ textDecoration: 'none' }}>
+                            <Link to={"/"} style={{ textDecoration: 'none' }}>
 
                                 <Typography
                                     sx={{
                                         textDecoration: 'none',
                                         marginTop: 2
                                     }}
-                                >Don't have an account? Sign Up</Typography>
+                                >Already have an account? Login </Typography>
                             </Link>
                         </Grid>
                     </Grid>

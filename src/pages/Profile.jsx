@@ -11,7 +11,7 @@ const Profile = () => {
 
     const handleLogout = () => {
         localStorage.clear('user');
-        navi("/login");
+        navi("/");
     }
 
     return (
